@@ -1,0 +1,41 @@
+﻿Прежде всего, общие замечания
+1. Если я отслеживать ошибки при поппытках передать данные в сеть то стоит обратить внимание на следущее перечисление: enum WebExceptionStatus
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Variant 1 - Server unavailable - нету сети, сеть не доступна или недоступен сервер (прям вообще не доступен - запрос до него не дошёл) по какой то причине
+
+exception.Status: ConnectFailure
+exception.Message: Unable to connect to the remote server
+exception.Response:
+exception.Source: System
+exception.TargetSite: System.IO.Stream GetRequestStream(System.Net.TransportContext ByRef)
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Variant 2 - Server available, but если Сервер крашиться из-за неправильного запроса например при распарсивание неграмотно составленного сообщения
+
+exception.Status: ProtocolError
+exception.Message: The remote server returned an error: (500) Internal Server Error.
+exception.Response: System.Net.HttpWebResponse
+        StatusCode: InternalServerError
+        StatusDescription: Internal Server Error
+        Server:
+exception.Source: System
+exception.TargetSite: System.Net.WebResponse GetResponse()
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Variant 3 - Server available, but сервер не крашиться, но по заданому URI на сервере нету Routine, нету обработчика нужно дописать обработчик на NodeJS (Express.js)
+
+exception.Status: ProtocolError
+exception.Message: The remote server returned an error: (404) Not Found.
+exception.Response: System.Net.HttpWebResponse
+        StatusCode: NotFound
+        StatusDescription: Not Found
+        Server:
+exception.Source: System
+exception.TargetSite: System.Net.WebResponse GetResponse()
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Variant 4 - Timeout со стороны клиента. Причем важно отметить что если сеть не доступна тогда выкинеться эксепшен - Variant 1 - Server unavailable
+
+exception.Status: Timeout
+exception.Message: The operation has timed out
+exception.Response:
+exception.Source: System
+exception.TargetSite: System.Net.WebResponse GetResponse()
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------

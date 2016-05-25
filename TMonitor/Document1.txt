@@ -1,0 +1,16 @@
+﻿void OnCantSendMessage()
+        {
+            Console.WriteLine("Ошибка непонятного свойства при попытке передачи данных в сеть.\nНеобходимо реализовать обработчик кый будет сохранять данные локально в файл для последующей передачи");
+            Console.WriteLine("currentRetry: " + currentRetry);
+            //Console.WriteLine("exception.Status: " + exception.Status);
+            //Console.WriteLine("exception.Message: " + exception.Message);
+            //Console.WriteLine("exception.Response: " + exception.Response);
+            //    Console.WriteLine("\tStatusCode: " + ((HttpWebResponse)exception.Response).StatusCode);
+            //    Console.WriteLine("\tStatusDescription: " + ((HttpWebResponse)exception.Response).StatusDescription);
+            //    Console.WriteLine("\tServer: " + ((HttpWebResponse)exception.Response).Server);
+            //Console.WriteLine("exception.Source: " + exception.Source);
+            //Console.WriteLine("exception.TargetSite: " + exception.TargetSite);
+            //Console.WriteLine("exception.ToString: " + exception.ToString());
+            //Console.WriteLine("exception.Data: " + exception.Data);
+            //throw new NotImplementedException("OnCantSendMessage");
+        }
