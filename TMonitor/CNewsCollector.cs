@@ -74,6 +74,14 @@ namespace TMonitor
         {
             NewsHandler(ENewsBitType.windowDressing, pPoint, pDescription);
         }
+        static public void Test(string pPoint, string pDescription = "")
+        {
+            NewsHandler(ENewsBitType.test, pPoint, pDescription);
+        }
+        static public void SaveData(string pPoint, string pDescription = "")
+        {
+            NewsHandler(ENewsBitType.saveData, pPoint, pDescription);
+        }
         static public void ClearNewsFeed()
         {
             newsFeed.Clear();

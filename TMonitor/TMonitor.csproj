@@ -53,6 +53,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="GitIgnoreThisFolder\ЗаметкиНаЗавтра.txt" />
+    <None Include="GitIgnoreThisFolder\WholeProject.cd" />
     <None Include="confTemplate.json" />
     <Content Include="Conclusions.txt" />
     <Content Include="Document1.txt" />

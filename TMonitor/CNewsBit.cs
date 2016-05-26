@@ -21,6 +21,8 @@ namespace TMonitor
         applicationStart,
         applicationEnd,
         windowDressing,//События кое служит для подтверждения работы приложения (автогенерируя эту новость приложение создает видимость работы)
+        test,
+        saveData,
     }
 
     [JsonObject(MemberSerialization.OptIn)]
