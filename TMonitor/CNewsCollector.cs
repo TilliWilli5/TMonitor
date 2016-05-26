@@ -54,13 +54,25 @@ namespace TMonitor
         {
             NewsHandler(ENewsBitType.screenSaverEnd, pPoint, pDescription);
         }
-        static public string ShowNewsBasket()
+        static public void ActivityStart(string pPoint, string pDescription = "")
         {
-            return JsonConvert.SerializeObject(newsFeed);
+            NewsHandler(ENewsBitType.activityStart, pPoint, pDescription);
         }
-        static public string GetNews()
+        static public void ActivityEnd(string pPoint, string pDescription = "")
         {
-            return JsonConvert.SerializeObject(newsFeed);
+            NewsHandler(ENewsBitType.activityEnd, pPoint, pDescription);
+        }
+        static public void ApplicationStart(string pPoint, string pDescription = "")
+        {
+            NewsHandler(ENewsBitType.applicationStart, pPoint, pDescription);
+        }
+        static public void ApplicationEnd(string pPoint, string pDescription = "")
+        {
+            NewsHandler(ENewsBitType.applicationEnd, pPoint, pDescription);
+        }
+        static public void WindowDressing(string pPoint = "wd", string pDescription = "")
+        {
+            NewsHandler(ENewsBitType.windowDressing, pPoint, pDescription);
         }
         static public void ClearNewsFeed()
         {

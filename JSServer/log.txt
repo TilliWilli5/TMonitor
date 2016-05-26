@@ -1,0 +1,4 @@
+[Server time start]: 5/26/2016, 6:17:09 AM
+[Server shutdown time]: 5/26/2016, 6:18:01 AM
+[Quantity of request]: 18
+[Quantity of ButtonEvent]: 7

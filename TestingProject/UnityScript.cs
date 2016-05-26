@@ -7,7 +7,7 @@ using System.IO;
 
 namespace TestingProject
 {
-    
+    using NewNews = CNewsCollector;
     class UnityScript
     {
         //Для класса CAutoLoader
@@ -33,6 +33,8 @@ namespace TestingProject
 
         static void Main(string[] args)
         {
+            //Как только приложение стартует добавляем первую новость о том что приложение запустилось
+            NewNews.ApplicationStart("mark!main function");
             //Узнаем полный путь к файлу настроек
             string pathNameToConf = Application.dataPath + "/" + configurationFileName;
             //Составляем полный путь к директории куда будут сохраняться файлы логов
@@ -88,7 +90,10 @@ namespace TestingProject
             //
             //Тестирование фишек ниже. Все что выше будет переноситься в продакшен
             //
+            NewNews.ApplicationEnd("mark!main function");
             Console.ReadLine();
+            //Приложение заканчивает свою работу. Генерируем новость об этом. Эта строчка должна оставаться последней
+            NewNews.ApplicationEnd("mark!main function");
         }
     }
 }

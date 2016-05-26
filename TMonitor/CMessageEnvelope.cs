@@ -23,12 +23,12 @@ namespace TMonitor
         uint tick;
         [JsonProperty]
         DateTime sendingTime;
-        [JsonProperty("message")]
-        string _message;//JSON'ed мессадж
-        public string message { get { return _message; } }
         [JsonProperty("signature")]
         string _signature;
         public string signature { get { return _signature; } }
+        [JsonProperty("message")]
+        string _message;//JSON'ed мессадж
+        public string message { get { return _message; } }
 
         public CMessageEnvelope(string pCorrespondence, string pSignature)
         {

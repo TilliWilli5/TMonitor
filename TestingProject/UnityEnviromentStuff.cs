@@ -14,6 +14,6 @@ namespace TestingProject
     public class Application
     {
         public static string persistentDataPath = @"C:\Users\Tilli\Documents\Visual Studio 2015\Projects\TMonitor\TestingProject\bin\Debug";
-        public static string dataPath = @"C:\Users\Tilli\Documents\Visual Studio 2015\Projects\TMonitor\TestingProject\bin\Debug";
+        public static string dataPath = @"C:\Users\Tilli\Documents\Visual Studio 2015\Projects\TMonitor\TestingProject";
     }
 }

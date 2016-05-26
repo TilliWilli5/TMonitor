@@ -90,15 +90,18 @@ namespace TMonitor
         }
         public override Dictionary<string, string> ExtractAllArchives()
         {
+            Console.WriteLine("[log2serv]:[ExtractAllArchives]:started");
             Dictionary<string, string> _result = new Dictionary<string, string>();
             if (Directory.Exists(logDirectory))
             {
                 string[] files = Directory.GetFiles(logDirectory);
                 for (int iX = 0; iX < files.Length; ++iX)
                 {
+                    Console.WriteLine("[log2serv]:[ExtractAllArchives]:file" + iX + ": " + files[iX]);
                     _result.Add(files[iX], File.ReadAllText(files[iX]));
                 }
             }
+            Console.WriteLine("[log2serv]:[ExtractAllArchives]:finished-successfully");
             return _result;
         }
     }

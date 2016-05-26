@@ -39,12 +39,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AllTypeMessages.cs" />
+    <Compile Include="CMessageEnvelope.cs" />
     <Compile Include="CApplicationStatisticsCollector.cs" />
     <Compile Include="CClientInspector.cs" />
     <Compile Include="CClientPostman.cs" />
     <Compile Include="CInitiativeScheduler.cs" />
-    <Compile Include="CLoader.cs" />
+    <Compile Include="CAutoLoader.cs" />
     <Compile Include="CLogger.cs" />
     <Compile Include="CNewsBit.cs" />
     <Compile Include="INewsAll.cs" />
@@ -52,14 +52,14 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="GitIgnoreThisFolder\ЗаметкиНаЗавтра.txt" />
     <None Include="confTemplate.json" />
+    <Content Include="Conclusions.txt" />
     <Content Include="Document1.txt" />
     <Content Include="Todo.txt" />
     <Content Include="WebExceptionListAndHandlers.txt" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="GitIgnoreThisFolder\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

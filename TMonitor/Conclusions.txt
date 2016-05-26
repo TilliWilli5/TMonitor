@@ -1,0 +1,1 @@
+﻿1. Правильно работать с string<->byte[] надо используя Encoding.UTF8.GetBytes

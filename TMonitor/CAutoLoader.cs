@@ -23,6 +23,18 @@ namespace TMonitor
                     return false;
                 }
         }
+        static public bool LoadFromText(string pText)
+        {
+            try
+            {
+                configuration = JsonConvert.DeserializeObject<Dictionary<string, string>>(pText);
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
         static public Dictionary<string, string> GetConfiguration()
         {
             return configuration;

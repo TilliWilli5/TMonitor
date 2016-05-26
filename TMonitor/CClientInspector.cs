@@ -79,6 +79,7 @@ namespace TMonitor
         }
         public void SendLogsToServer()
         {
+            Console.WriteLine("[log2serv]:[SendLogsToServer]:started");
             //Воспользовавшись функционалом Архиватора мы получим словарь с ключами ввиде имен файлов и значениями ввиде содержимого файлов
             Dictionary<string, string> theFileCollection = archiveService.ExtractAllArchives();
             foreach (KeyValuePair<string, string> file in theFileCollection)
@@ -86,9 +87,11 @@ namespace TMonitor
                 bool requestResult = postalService.SendLogs(file.Value, JsonConvert.SerializeObject(this));
                 if(requestResult)
                 {
+                    Console.WriteLine("[log2serv]:[SendLogsToServer]:before-delete-file");
                     File.Delete(file.Key);
                 }
             }
+            Console.WriteLine("[log2serv]:[SendLogsToServer]:finished-successfully");
         }
         public void NewsFeedToLogs()
         {
@@ -97,7 +100,7 @@ namespace TMonitor
         }
         public void WindowDressing()
         {
-            CNewsCollector.GeneralNews("WindowDressing");
+            CNewsCollector.WindowDressing();
             //CNewsCollector.ButtonPressed("unknown button");
         }
     }

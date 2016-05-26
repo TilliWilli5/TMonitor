@@ -32,7 +32,7 @@ namespace TMonitor
         //Не реализована сериализация-подержка следующих параметров в модуле - НАДО РЕАЛИЗОВАТЬ
         public string scheme = "http://";
         public uint port = 80;
-        public uint requestTimeout = 5000;
+        public int requestTimeout = 5000;
         public uint maxRetryCount = 0;//колво попыток передать сообщение на сервер
         public uint tryDelay = 5000;//задержка между попытками в миллесекундах
 
@@ -53,6 +53,7 @@ namespace TMonitor
                 serverAddress = pConfiguration["serverAddress"];
                 httpMethod = pConfiguration["httpMethod"];
                 httpContentType = pConfiguration["httpContentType"];
+                requestTimeout = Convert.ToInt32(pConfiguration["requestTimeout"]);
                 return true;
             }
             catch
@@ -127,8 +128,8 @@ namespace TMonitor
                 request.Method = httpMethod;
                 request.Timeout = (int)requestTimeout;
                 Console.WriteLine("[tilli]: Timeout " + request.Timeout);
-                //string postData = theEnvelope.ToJSON();
-                string postData = JsonConvert.SerializeObject(new CMessageEnvelope("x", "signature"));
+                string postData = theEnvelope.ToJSON();
+                //string postData = JsonConvert.SerializeObject(new CMessageEnvelope("x", "signature"));
                 Console.WriteLine("[tilli]: postData\n" + postData + "\n\n");
                 byte[] byteArray = Encoding.UTF8.GetBytes(postData);
                 request.ContentType = httpContentType;
@@ -164,6 +165,7 @@ namespace TMonitor
         }
         public override bool SendLogs(string pCorrespondence, string pSignature)
         {
+            Console.WriteLine("[log2serv]:[Postman]:[SendLogs]:started");
             try
             {
                 CMessageEnvelope theEnvelope = new CMessageEnvelope(pCorrespondence, pSignature);
@@ -172,14 +174,16 @@ namespace TMonitor
                 request.Method = httpMethod;
                 request.Timeout = (int)requestTimeout;
                 string postData = theEnvelope.ToJSON();
+                //Console.WriteLine("[log2serv]:[Postman]:[SendLogs]:postData:\n\n" + postData + "\n\n");
                 byte[] byteArray = Encoding.UTF8.GetBytes(postData);
                 request.ContentType = httpContentType;
+                request.ContentType = "application/json";
                 request.ContentLength = byteArray.Length;
                 Stream dataStream = request.GetRequestStream();
                 dataStream.Write(byteArray, 0, byteArray.Length);
                 dataStream.Close();
                 WebResponse response = request.GetResponse();
-                //Console.WriteLine(((HttpWebResponse)response).StatusDescription);
+                Console.WriteLine(((HttpWebResponse)response).StatusDescription);
                 dataStream = response.GetResponseStream();
                 StreamReader reader = new StreamReader(dataStream);
                 string responseFromServer = reader.ReadToEnd();
@@ -187,12 +191,18 @@ namespace TMonitor
                 reader.Close();
                 dataStream.Close();
                 response.Close();
+                Console.WriteLine("[log2serv]:[Postman]:[SendLogs]:finished-successfully");
                 return true;
             }
-            catch (UriFormatException)
+            catch(Exception e)
             {
+                //Console.BackgroundColor = ConsoleColor.DarkRed;
+                Console.WriteLine("[log2serv]:[Postman]:[SendLogs]:error:\n" + e.Message + "\n");
+                //Console.BackgroundColor = ConsoleColor.Black;
+                Console.WriteLine("[log2serv]:[Postman]:[SendLogs]:failed");
                 return false;
             }
+            
         }
         void OnTimeout()
         {
