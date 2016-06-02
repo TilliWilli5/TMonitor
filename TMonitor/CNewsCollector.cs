@@ -27,61 +27,68 @@ namespace TMonitor
             //if (newsFeed.Count >= effectiveMessageCount)
             //    OnBasketFillOut();
         }
-        //
-        //Различные телеметрические ивенты кые могут быть интересны. Нижестоящие функции это тот интерфейс кый будет раскрыт стороннему разработчику.
-        //
-        static public void GeneralNews(string pPoint, string pDescription = "")
+
+		#region TeleFunctions
+		//
+		//Различные телеметрические ивенты кые могут быть интересны. Нижестоящие функции это тот интерфейс кый будет раскрыт стороннему разработчику.
+		//
+		static public void GeneralNews(string pPoint, string pDescription = "")
+		{
+			NewsHandler(ENewsBitType.general, pPoint, pDescription);
+		}
+		static public void ButtonPressed(string pPoint, string pDescription = "")
+		{
+			NewsHandler(ENewsBitType.buttonPressed, pPoint, pDescription);
+		}
+		static public void SplashScreenStart(string pPoint, string pDescription = "")
+		{
+			NewsHandler(ENewsBitType.splashScreenStart, pPoint, pDescription);
+		}
+		static public void SplashScreenEnd(string pPoint, string pDescription = "")
+		{
+			NewsHandler(ENewsBitType.splashScreenEnd, pPoint, pDescription);
+		}
+		static public void ScreenSaverStart(string pPoint, string pDescription = "")
+		{
+			NewsHandler(ENewsBitType.screenSaverStart, pPoint, pDescription);
+		}
+		static public void ScreenSaverEnd(string pPoint, string pDescription = "")
+		{
+			NewsHandler(ENewsBitType.screenSaverEnd, pPoint, pDescription);
+		}
+		static public void ActivityStart(string pPoint, string pDescription = "")
+		{
+			NewsHandler(ENewsBitType.activityStart, pPoint, pDescription);
+		}
+		static public void ActivityEnd(string pPoint, string pDescription = "")
+		{
+			NewsHandler(ENewsBitType.activityEnd, pPoint, pDescription);
+		}
+		static public void ApplicationStart(string pPoint, string pDescription = "")
+		{
+			NewsHandler(ENewsBitType.applicationStart, pPoint, pDescription);
+		}
+		static public void ApplicationEnd(string pPoint, string pDescription = "")
+		{
+			NewsHandler(ENewsBitType.applicationEnd, pPoint, pDescription);
+		}
+		static public void WindowDressing(string pPoint = "wd", string pDescription = "")
+		{
+			NewsHandler(ENewsBitType.windowDressing, pPoint, pDescription);
+		}
+		static public void Test(string pPoint, string pDescription = "")
+		{
+			NewsHandler(ENewsBitType.test, pPoint, pDescription);
+		}
+		static public void SaveData(string pPoint, string pDescription = "")
+		{
+			NewsHandler(ENewsBitType.saveData, pPoint, pDescription);
+		}
+        static public void Log(string pPoint, string pDescription = "")
         {
-            NewsHandler(ENewsBitType.general, pPoint, pDescription);
+            NewsHandler(ENewsBitType.log, pPoint, pDescription);
         }
-        static public void ButtonPressed(string pPoint, string pDescription = "")
-        {
-            NewsHandler(ENewsBitType.buttonPressed, pPoint, pDescription);
-        }
-        static public void SplashScreenStart(string pPoint, string pDescription = "")
-        {
-            NewsHandler(ENewsBitType.splashScreenStart, pPoint, pDescription);
-        }
-        static public void SplashScreenEnd(string pPoint, string pDescription = "")
-        {
-            NewsHandler(ENewsBitType.splashScreenEnd, pPoint, pDescription);
-        }
-        static public void ScreenSaverStart(string pPoint, string pDescription = "")
-        {
-            NewsHandler(ENewsBitType.screenSaverStart, pPoint, pDescription);
-        }
-        static public void ScreenSaverEnd(string pPoint, string pDescription = "")
-        {
-            NewsHandler(ENewsBitType.screenSaverEnd, pPoint, pDescription);
-        }
-        static public void ActivityStart(string pPoint, string pDescription = "")
-        {
-            NewsHandler(ENewsBitType.activityStart, pPoint, pDescription);
-        }
-        static public void ActivityEnd(string pPoint, string pDescription = "")
-        {
-            NewsHandler(ENewsBitType.activityEnd, pPoint, pDescription);
-        }
-        static public void ApplicationStart(string pPoint, string pDescription = "")
-        {
-            NewsHandler(ENewsBitType.applicationStart, pPoint, pDescription);
-        }
-        static public void ApplicationEnd(string pPoint, string pDescription = "")
-        {
-            NewsHandler(ENewsBitType.applicationEnd, pPoint, pDescription);
-        }
-        static public void WindowDressing(string pPoint = "wd", string pDescription = "")
-        {
-            NewsHandler(ENewsBitType.windowDressing, pPoint, pDescription);
-        }
-        static public void Test(string pPoint, string pDescription = "")
-        {
-            NewsHandler(ENewsBitType.test, pPoint, pDescription);
-        }
-        static public void SaveData(string pPoint, string pDescription = "")
-        {
-            NewsHandler(ENewsBitType.saveData, pPoint, pDescription);
-        }
+        #endregion
         static public void ClearNewsFeed()
         {
             newsFeed.Clear();

@@ -8,6 +8,8 @@ using System.IO;
 
 namespace TMonitor
 {
+    using SSDictionary = Dictionary<string, string>;
+    public delegate void IncomingOrderDelegate();
     //
     //the Boss class. Один Инстпектор на одну интерактивную инсталяцию. Реализовать singleton - данный класс должен быть один в инсталяции
     //Класс должен заниматься упаковкой писем, подписыванием ит.д. Он должен с некоторой переодичностью ходить и собирать различную инфу с класса NewsCollector
@@ -73,9 +75,11 @@ namespace TMonitor
         }
         public void SendPingSignalToServer()
         {
-            Console.WriteLine("[tilli]: SendPingSignalToServer start");
-            postalService.SendPing("ping", JsonConvert.SerializeObject(this));
-            Console.WriteLine("[tilli]: SendPingSignalToServer start");
+            //Console.WriteLine("[tilli]: SendPingSignalToServer start");
+            string response = postalService.SendPing("ping", JsonConvert.SerializeObject(this));
+            if (response != "pong")
+                _OnIncomingOrder(response);
+            //Console.WriteLine("[tilli]: SendPingSignalToServer start");
         }
         public void SendLogsToServer()
         {
@@ -102,6 +106,18 @@ namespace TMonitor
         {
             CNewsCollector.WindowDressing();
             //CNewsCollector.ButtonPressed("unknown button");
+        }
+        public event IncomingOrderDelegate QuitOrder;
+        public void _OnIncomingOrder(string pResponse)
+        {
+            SSDictionary response = JsonConvert.DeserializeObject<SSDictionary>(pResponse);
+            if (response.ContainsKey("order"))
+            {
+                if (response["order"] == "quit")
+                {
+                    QuitOrder?.Invoke();
+                }
+            }
         }
     }
 }

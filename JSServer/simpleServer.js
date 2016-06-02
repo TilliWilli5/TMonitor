@@ -25,7 +25,17 @@ app.post('/', function (req, res) {
 		console.log(req.body.message);
 	}
 	console.log("\n-----------------------------------------------------------------------------------------------------------------------------\n");
-	res.send('ok');
+	if(counter >= 3)
+	{
+		// res.send('{"order":"quit"}');
+		res.send('pong');
+	}
+		
+	else
+	{
+		res.send('pong');
+	}
+		
 	++counter;
 });
 var port = 80;

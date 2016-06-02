@@ -15,7 +15,7 @@ namespace TMonitor
         //string GetInformation();
         //string FreeInformation();
         public abstract void Send(string pCorrespondence, string pSignature);
-        public abstract bool SendPing(string pCorrespondence, string pSignature);
+        public abstract string SendPing(string pCorrespondence, string pSignature);
         public abstract bool SendLogs(string pCorrespondence, string pSignature);
         //Ивенты
         public abstract void OnSuccessDelivery();
@@ -113,7 +113,7 @@ namespace TMonitor
                 }
             }
         }
-        public override bool SendPing(string pCorrespondence, string pSignature)
+        public override string SendPing(string pCorrespondence, string pSignature)
         {
             Console.WriteLine("[tilli]: SendPing start");
             try
@@ -121,20 +121,20 @@ namespace TMonitor
                 CMessageEnvelope theEnvelope = new CMessageEnvelope(pCorrespondence, pSignature);
                 lastMessageEnvelope = theEnvelope;
                 WebRequest request = WebRequest.Create(string.Format("{0}{1}:{2}/", scheme, serverAddress, port));
-                Console.WriteLine("[tilli]: After creating WebRequest.Create");
-                if(httpMethod == null)
-                    Console.WriteLine("[tilli]: httpMethod is null ");
-                Console.WriteLine("[tilli]: httpMethod " + httpMethod);
+                //Console.WriteLine("[tilli]: After creating WebRequest.Create");
+                //if(httpMethod == null)
+                //    Console.WriteLine("[tilli]: httpMethod is null ");
+                //Console.WriteLine("[tilli]: httpMethod " + httpMethod);
                 request.Method = httpMethod;
                 request.Timeout = (int)requestTimeout;
-                Console.WriteLine("[tilli]: Timeout " + request.Timeout);
+                //Console.WriteLine("[tilli]: Timeout " + request.Timeout);
                 string postData = theEnvelope.ToJSON();
                 //string postData = JsonConvert.SerializeObject(new CMessageEnvelope("x", "signature"));
-                Console.WriteLine("[tilli]: postData\n" + postData + "\n\n");
+                //Console.WriteLine("[tilli]: postData\n" + postData + "\n\n");
                 byte[] byteArray = Encoding.UTF8.GetBytes(postData);
                 request.ContentType = httpContentType;
                 request.ContentType = "application/json";
-                Console.WriteLine("[tilli]: ContentType " + httpContentType);
+                //Console.WriteLine("[tilli]: ContentType " + httpContentType);
                 request.ContentLength = byteArray.Length;
                 Stream dataStream = request.GetRequestStream();
                 dataStream.Write(byteArray, 0, byteArray.Length);
@@ -144,23 +144,23 @@ namespace TMonitor
                 dataStream = response.GetResponseStream();
                 StreamReader reader = new StreamReader(dataStream);
                 string responseFromServer = reader.ReadToEnd();
-                Console.WriteLine(responseFromServer);
+                //Console.WriteLine(responseFromServer);
                 reader.Close();
                 dataStream.Close();
                 response.Close();
-                Console.WriteLine("[tilli]: SendPing end");
-                return true;
+                //Console.WriteLine("[tilli]: SendPing end");
+                return responseFromServer;
             
             }
             catch (UriFormatException)
             {
-                return false;
+                return null;
             }
             catch(Exception e)
             {
-                Console.WriteLine("[tilli]: SendPing Exception");
-                Console.WriteLine("[tilli]: SendPing Error: " + e.Message);
-                return false;
+                //Console.WriteLine("[tilli]: SendPing Exception");
+                //Console.WriteLine("[tilli]: SendPing Error: " + e.Message);
+                return null;
             }
         }
         public override bool SendLogs(string pCorrespondence, string pSignature)
