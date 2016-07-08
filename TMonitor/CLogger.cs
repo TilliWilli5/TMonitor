@@ -63,8 +63,15 @@ namespace TMonitor
                     UTF8Encoding utf8 = new UTF8Encoding();
                     FileStream fs = File.OpenWrite(fileName);
                     fs.Seek(-1, SeekOrigin.End);
-                    fs.Write(utf8.GetBytes(appendData), 0, appendData.Length);
-                    fs.Dispose();
+                    try
+                    {
+                        fs.Write(utf8.GetBytes(appendData), 0, appendData.Length);
+                    }
+                    finally
+                    {
+                        fs.Close();
+                        fs.Dispose();
+                    }
                     return true;
                 }
                 catch
@@ -90,18 +97,18 @@ namespace TMonitor
         }
         public override Dictionary<string, string> ExtractAllArchives()
         {
-            Console.WriteLine("[log2serv]:[ExtractAllArchives]:started");
+            //Console.WriteLine("[log2serv]:[ExtractAllArchives]:started");
             Dictionary<string, string> _result = new Dictionary<string, string>();
             if (Directory.Exists(logDirectory))
             {
                 string[] files = Directory.GetFiles(logDirectory);
                 for (int iX = 0; iX < files.Length; ++iX)
                 {
-                    Console.WriteLine("[log2serv]:[ExtractAllArchives]:file" + iX + ": " + files[iX]);
+                    //Console.WriteLine("[log2serv]:[ExtractAllArchives]:file" + iX + ": " + files[iX]);
                     _result.Add(files[iX], File.ReadAllText(files[iX]));
                 }
             }
-            Console.WriteLine("[log2serv]:[ExtractAllArchives]:finished-successfully");
+            //Console.WriteLine("[log2serv]:[ExtractAllArchives]:finished-successfully");
             return _result;
         }
     }

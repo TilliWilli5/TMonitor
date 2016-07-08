@@ -60,6 +60,31 @@ namespace TMonitor
         }
         public bool CheckInstallationToken(bool pExceptionMode = false)
         {
+            string response = SendCommandToServer("checkToken");
+            if(pExceptionMode)
+            {
+                if(response == "valid")
+                {
+                    return true;
+                }
+                else
+                {
+                    throw new Exception("Invalid installation token");
+                }
+            }
+            else
+            {
+                if (response == "valid")
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            
+            /*
             if(pExceptionMode)
             {
                 throw new Exception("Installation token is wrong. Revalidate and get new token.");
@@ -68,6 +93,7 @@ namespace TMonitor
             {
                 return true;
             }
+            */
         }
         public void MessageReturn(CMessageEnvelope pMessageEnvelope)
         {
@@ -83,7 +109,7 @@ namespace TMonitor
         }
         public void SendLogsToServer()
         {
-            Console.WriteLine("[log2serv]:[SendLogsToServer]:started");
+            //Console.WriteLine("[log2serv]:[SendLogsToServer]:started");
             //Воспользовавшись функционалом Архиватора мы получим словарь с ключами ввиде имен файлов и значениями ввиде содержимого файлов
             Dictionary<string, string> theFileCollection = archiveService.ExtractAllArchives();
             foreach (KeyValuePair<string, string> file in theFileCollection)
@@ -91,11 +117,16 @@ namespace TMonitor
                 bool requestResult = postalService.SendLogs(file.Value, JsonConvert.SerializeObject(this));
                 if(requestResult)
                 {
-                    Console.WriteLine("[log2serv]:[SendLogsToServer]:before-delete-file");
+                    //Console.WriteLine("[log2serv]:[SendLogsToServer]:before-delete-file");
                     File.Delete(file.Key);
                 }
             }
-            Console.WriteLine("[log2serv]:[SendLogsToServer]:finished-successfully");
+            //Console.WriteLine("[log2serv]:[SendLogsToServer]:finished-successfully");
+        }
+        public string SendCommandToServer(string pCommand)
+        {
+            string response = postalService.SendCommand(pCommand, JsonConvert.SerializeObject(this));
+            return response;
         }
         public void NewsFeedToLogs()
         {

@@ -17,6 +17,7 @@ namespace TMonitor
         public abstract void Send(string pCorrespondence, string pSignature);
         public abstract string SendPing(string pCorrespondence, string pSignature);
         public abstract bool SendLogs(string pCorrespondence, string pSignature);
+        public abstract string SendCommand(string pCorrespondence, string pSignature);
         //Ивенты
         public abstract void OnSuccessDelivery();
         public abstract void OnErrorDelivery();
@@ -32,6 +33,7 @@ namespace TMonitor
         //Не реализована сериализация-подержка следующих параметров в модуле - НАДО РЕАЛИЗОВАТЬ
         public string scheme = "http://";
         public uint port = 80;
+        public string webSubdomain = "";
         public int requestTimeout = 5000;
         public uint maxRetryCount = 0;//колво попыток передать сообщение на сервер
         public uint tryDelay = 5000;//задержка между попытками в миллесекундах
@@ -53,6 +55,9 @@ namespace TMonitor
                 serverAddress = pConfiguration["serverAddress"];
                 httpMethod = pConfiguration["httpMethod"];
                 httpContentType = pConfiguration["httpContentType"];
+                scheme = pConfiguration["scheme"];
+                port = Convert.ToUInt32(pConfiguration["port"]);
+                webSubdomain = pConfiguration["webSubdomain"];
                 requestTimeout = Convert.ToInt32(pConfiguration["requestTimeout"]);
                 return true;
             }
@@ -68,7 +73,7 @@ namespace TMonitor
             {
                 CMessageEnvelope theEnvelope = new CMessageEnvelope(pCorrespondence, pSignature);
                 lastMessageEnvelope = theEnvelope;
-                WebRequest request = WebRequest.Create(string.Format("{0}{1}:{2}/", scheme, serverAddress, port));
+                WebRequest request = WebRequest.Create(string.Format("{0}{1}:{2}/{3}", scheme, serverAddress, port, webSubdomain));
                 request.Method = httpMethod;
                 request.Timeout = (int)requestTimeout;
                 string postData = theEnvelope.ToJSON();
@@ -120,7 +125,7 @@ namespace TMonitor
             {
                 CMessageEnvelope theEnvelope = new CMessageEnvelope(pCorrespondence, pSignature);
                 lastMessageEnvelope = theEnvelope;
-                WebRequest request = WebRequest.Create(string.Format("{0}{1}:{2}/", scheme, serverAddress, port));
+                WebRequest request = WebRequest.Create(string.Format("{0}{1}:{2}/{3}", scheme, serverAddress, port, webSubdomain));
                 //Console.WriteLine("[tilli]: After creating WebRequest.Create");
                 //if(httpMethod == null)
                 //    Console.WriteLine("[tilli]: httpMethod is null ");
@@ -170,7 +175,7 @@ namespace TMonitor
             {
                 CMessageEnvelope theEnvelope = new CMessageEnvelope(pCorrespondence, pSignature);
                 lastMessageEnvelope = theEnvelope;
-                WebRequest request = WebRequest.Create(string.Format("{0}{1}:{2}/", scheme, serverAddress, port));
+                WebRequest request = WebRequest.Create(string.Format("{0}{1}:{2}/{3}", scheme, serverAddress, port, webSubdomain));
                 request.Method = httpMethod;
                 request.Timeout = (int)requestTimeout;
                 string postData = theEnvelope.ToJSON();
@@ -203,6 +208,56 @@ namespace TMonitor
                 return false;
             }
             
+        }
+        public override string SendCommand(string pCorrespondence, string pSignature)
+        {
+            Console.WriteLine("[tilli]: SendPing start");
+            try
+            {
+                CMessageEnvelope theEnvelope = new CMessageEnvelope(pCorrespondence, pSignature);
+                lastMessageEnvelope = theEnvelope;
+                WebRequest request = WebRequest.Create(string.Format("{0}{1}:{2}/{3}", scheme, serverAddress, port, webSubdomain));
+                //Console.WriteLine("[tilli]: After creating WebRequest.Create");
+                //if(httpMethod == null)
+                //    Console.WriteLine("[tilli]: httpMethod is null ");
+                //Console.WriteLine("[tilli]: httpMethod " + httpMethod);
+                request.Method = httpMethod;
+                request.Timeout = (int)requestTimeout;
+                //Console.WriteLine("[tilli]: Timeout " + request.Timeout);
+                string postData = theEnvelope.ToJSON();
+                //string postData = JsonConvert.SerializeObject(new CMessageEnvelope("x", "signature"));
+                //Console.WriteLine("[tilli]: postData\n" + postData + "\n\n");
+                byte[] byteArray = Encoding.UTF8.GetBytes(postData);
+                request.ContentType = httpContentType;
+                request.ContentType = "application/json";
+                //Console.WriteLine("[tilli]: ContentType " + httpContentType);
+                request.ContentLength = byteArray.Length;
+                Stream dataStream = request.GetRequestStream();
+                dataStream.Write(byteArray, 0, byteArray.Length);
+                dataStream.Close();
+                WebResponse response = request.GetResponse();
+                //Console.WriteLine(((HttpWebResponse)response).StatusDescription);
+                dataStream = response.GetResponseStream();
+                StreamReader reader = new StreamReader(dataStream);
+                string responseFromServer = reader.ReadToEnd();
+                //Console.WriteLine(responseFromServer);
+                reader.Close();
+                dataStream.Close();
+                response.Close();
+                //Console.WriteLine("[tilli]: SendPing end");
+                return responseFromServer;
+
+            }
+            catch (UriFormatException)
+            {
+                return null;
+            }
+            catch (Exception e)
+            {
+                //Console.WriteLine("[tilli]: SendPing Exception");
+                //Console.WriteLine("[tilli]: SendPing Error: " + e.Message);
+                return null;
+            }
         }
         void OnTimeout()
         {

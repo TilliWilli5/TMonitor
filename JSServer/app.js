@@ -27,7 +27,7 @@ app.get('/', function (req, res) {
 	console.log(statment);
 	db.exec(statment);
 });
-app.post('/', function (req, res) {
+app.post('/telemetry', function (req, res) {
 	console.log(req.body);
 	/*
 	req.body.message = JSON.parse(req.body.message);
@@ -47,7 +47,7 @@ app.post('/', function (req, res) {
 
 app.use(express.static("C:/xampp/htdocs/gallery/"));
 console.log(__dirname);
-app.listen(80, function () {
+app.listen(8812, function () {
   console.log('The server is running');
 });
 var timeStart = new Date();

@@ -1,3 +1,3 @@
-[Server time start]: 6/3/2016, 12:10:31 AM
-[Server shutdown time]: 6/3/2016, 12:13:04 AM
-[Quantity of request]: 10
+[Server time start]: 6/9/2016, 5:21:42 PM
+[Server shutdown time]: 6/9/2016, 5:47:16 PM
+[Quantity of request]: 35

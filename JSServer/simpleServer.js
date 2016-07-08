@@ -10,35 +10,43 @@ var counter = 0;
 const bodyParser = require('body-parser');
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+//Настройки
+var port = 8812;
+var validToken = "xxx";
+var webSubdomain = "/telemetry";
 //
 //Обработчик пришедших сообщений (port 80, POST, application/json, "http://127.0.0.1/")
 //
-app.post('/', function (req, res) {
+app.post(webSubdomain, function (req, res) {
 	// console.log(req.body);
-	if(req.body.message != "ping")
-	{
-		var msg = JSON.parse(req.body.message);
-		console.log(msg);
-	}
-	else
+	if(req.body.message === "ping")
 	{
 		console.log(req.body.message);
+		res.send('pong');
 	}
+	if(req.body.message === "checkToken")
+	{
+		var signature = JSON.parse(req.body.signature);
+		if(signature.installationToken === validToken)
+		{
+			res.send("valid");
+			console.log("valid token");
+		}
+		else
+		{
+			res.send("invalid");
+			console.log("invalid token");
+		}
+	}
+	if(req.body.message != "ping" && req.body.message != "checkToken")
+	{
+		console.log(req.body.message);
+		res.send("thx");
+	}
+	
 	console.log("\n-----------------------------------------------------------------------------------------------------------------------------\n");
-	if(counter >= 3)
-	{
-		// res.send('{"order":"quit"}');
-		res.send('pong');
-	}
-		
-	else
-	{
-		res.send('pong');
-	}
-		
 	++counter;
 });
-var port = 80;
 app.listen(port, function () {
   console.log('Server is listening port ' + port);
 });
