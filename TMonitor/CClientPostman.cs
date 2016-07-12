@@ -4,6 +4,7 @@ using System.Text;
 using System.Net;
 using System.IO;
 using Newtonsoft.Json;
+using System.Threading;
 
 namespace TMonitor
 {
@@ -33,7 +34,7 @@ namespace TMonitor
         //Не реализована сериализация-подержка следующих параметров в модуле - НАДО РЕАЛИЗОВАТЬ
         public string scheme = "http://";
         public uint port = 80;
-        public string webSubdomain = "";
+        public string webSubdomain = "telemetry";
         public int requestTimeout = 5000;
         public uint maxRetryCount = 0;//колво попыток передать сообщение на сервер
         public uint tryDelay = 5000;//задержка между попытками в миллесекундах
@@ -138,7 +139,7 @@ namespace TMonitor
                 //Console.WriteLine("[tilli]: postData\n" + postData + "\n\n");
                 byte[] byteArray = Encoding.UTF8.GetBytes(postData);
                 request.ContentType = httpContentType;
-                request.ContentType = "application/json";
+                //request.ContentType = "application/json";
                 //Console.WriteLine("[tilli]: ContentType " + httpContentType);
                 request.ContentLength = byteArray.Length;
                 Stream dataStream = request.GetRequestStream();
@@ -182,7 +183,7 @@ namespace TMonitor
                 //Console.WriteLine("[log2serv]:[Postman]:[SendLogs]:postData:\n\n" + postData + "\n\n");
                 byte[] byteArray = Encoding.UTF8.GetBytes(postData);
                 request.ContentType = httpContentType;
-                request.ContentType = "application/json";
+                //request.ContentType = "application/json";
                 request.ContentLength = byteArray.Length;
                 Stream dataStream = request.GetRequestStream();
                 dataStream.Write(byteArray, 0, byteArray.Length);
@@ -211,7 +212,7 @@ namespace TMonitor
         }
         public override string SendCommand(string pCorrespondence, string pSignature)
         {
-            Console.WriteLine("[tilli]: SendPing start");
+            Console.WriteLine("[tilli]: CheckToken start");
             try
             {
                 CMessageEnvelope theEnvelope = new CMessageEnvelope(pCorrespondence, pSignature);
@@ -229,7 +230,7 @@ namespace TMonitor
                 //Console.WriteLine("[tilli]: postData\n" + postData + "\n\n");
                 byte[] byteArray = Encoding.UTF8.GetBytes(postData);
                 request.ContentType = httpContentType;
-                request.ContentType = "application/json";
+                //request.ContentType = "application/json";
                 //Console.WriteLine("[tilli]: ContentType " + httpContentType);
                 request.ContentLength = byteArray.Length;
                 Stream dataStream = request.GetRequestStream();

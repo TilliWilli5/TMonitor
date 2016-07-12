@@ -103,8 +103,8 @@ namespace TMonitor
         {
             //Console.WriteLine("[tilli]: SendPingSignalToServer start");
             string response = postalService.SendPing("ping", JsonConvert.SerializeObject(this));
-            if (response != "pong")
-                _OnIncomingOrder(response);
+            //if (response != "pong")
+            //    _OnIncomingOrder(response);
             //Console.WriteLine("[tilli]: SendPingSignalToServer start");
         }
         public void SendLogsToServer()

@@ -8,7 +8,7 @@ using System.IO;
 namespace TestingProject
 {
     using NewNews = CNewsCollector;
-    class UnityScript
+    class SendPingOnly
     {
         //Для класса CAutoLoader
         public static string configurationFileName = "conf.json";
@@ -79,21 +79,25 @@ namespace TestingProject
             theInspector.archiveService = theLogger;
             //Проверяем заданный токен инсталяции, есть ли такой в БД на сервере - чтоб удостовериться что Телеметрия бдует принематься по данной инсталяции.
             //Если такой ключ не зарегестрирован то кидаем исключение в качестве напоминания разработчику что надо обновить ключ епт
-            theInspector.CheckInstallationToken();
+            //theInspector.CheckInstallationToken();
             //Если передача данных не удалась что делать? Вешаем обработчики для такой ситуации
             thePostman.ErrorDelivery += new ErrorDeliveryHandler(theInspector.MessageReturn);//Необходимо продумать ситуацию в кой данные передаются из уже записанного лог файла и следовательно повторно архивировать в случае не удачи их не нужно
             //Создаем инициативу кая будет каждую минуту слать Пинг-покет на сервер
-            CInitiative thePingSignalToServer = new CInitiative(theInspector.SendPingSignalToServer, 1 * 3 * 1000, true, true, "Ping 1m", "Каждую минуту отсылает Пинг-сигнал на сервер");
-            CInitiative theLogsToServer = new CInitiative(theInspector.SendLogsToServer, 1 * 7 * 1000, true, true, "SendingLogs 1h", "Отсылка статистики из логов на сервер");
-            CInitiative theNewsFeedToLogs = new CInitiative(theInspector.NewsFeedToLogs, 1 * 3 * 1000, true, true, "NewsFeedToLogs 15m", "Забираем данные из ленты новостей и помещаем в логи, после чего очищаем ленту новостей");
-            CInitiative theWindowDressing = new CInitiative(theInspector.WindowDressing, 1 * 1 * 1000, true, true, "WindowDressing 1m", "Заполняем Ленту новостей чем-нибудь. Зондирующие сигналы");
+            //CInitiative thePingSignalToServer = new CInitiative(theInspector.SendPingSignalToServer, 1 * 3 * 1000, true, true, "Ping 1m", "Каждую минуту отсылает Пинг-сигнал на сервер");
+            //CInitiative theLogsToServer = new CInitiative(theInspector.SendLogsToServer, 1 * 7 * 1000, true, true, "SendingLogs 1h", "Отсылка статистики из логов на сервер");
+            //CInitiative theNewsFeedToLogs = new CInitiative(theInspector.NewsFeedToLogs, 1 * 3 * 1000, true, true, "NewsFeedToLogs 15m", "Забираем данные из ленты новостей и помещаем в логи, после чего очищаем ленту новостей");
+            //CInitiative theWindowDressing = new CInitiative(theInspector.WindowDressing, 1 * 1 * 1000, true, true, "WindowDressing 1m", "Заполняем Ленту новостей чем-нибудь. Зондирующие сигналы");
             //
             //Тестирование фишек ниже. Все что выше будет переноситься в продакшен
             //
-            NewNews.ApplicationEnd("mark!main function");
-            Console.ReadLine();
+            //NewNews.ApplicationEnd("mark!main function");
+            do
+            {
+                theInspector.SendPingSignalToServer();
+            }
+            while (Console.ReadLine() != "x");
             //Приложение заканчивает свою работу. Генерируем новость об этом. Эта строчка должна оставаться последней
-            NewNews.ApplicationEnd("mark!main function");
+            //NewNews.ApplicationEnd("mark!main function");
         }
     }
 }
